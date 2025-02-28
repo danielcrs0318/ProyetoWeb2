@@ -43,8 +43,8 @@ app.get('/', (req, res) => {
     </head>
     <body>
         <div class="container">
-            <h1>Â¡Hola, mundo!</h1>
-            <p>Este es un ejemplo de respuesta HTML enviada desde el backend.</p>
+            <h1>Proyecto Equipo 2</h1>
+            <p>Este es un Control de Pedidos de Restaurante.</p>
         </div>
     </body>
     </html>`);
@@ -63,27 +63,73 @@ app.get('/articulos',async (req, res) => {
 });
 
 
-// Crear un nuevo artÃ­culo
-app.post('/articulo', async (req, res) => {
+// Crear un nuevo cliente
+app.post('/t_clientes', async (req, res) => {
   
-  const { nombre, marca, precio, cantidad } = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
+  const { nombre, correo, telefono} = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
   
-  if (!nombre || !marca || !precio || !cantidad) {
-    return res.status(400).json({ error: 'Faltan datos para crear el artÃ­culo' });
+  if (!nombre || !correo || !telefono) {
+    return res.status(400).json({ error: 'Faltan datos para crear el cliente' });
   }
       
   try {
     const result = await pool.query(
-      `INSERT INTO articulos (nombre, marca, precio, cantidad) 
-       VALUES ($1, $2, $3, $4) RETURNING *`,
-      [nombre, marca, precio, cantidad]
+      `INSERT INTO t_clientes (nombre, correo, telefono) 
+       VALUES ($1, $2, $3) RETURNING *`,
+      [nombre, correo, telefono]
     );
     
-    res.status(201).json({ message: 'ArtÃ­culo creado exitosamente', articulo: result.rows[0] });
+    res.status(201).json({ message: 'Cliente creado exitosamente', articulo: result.rows[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+// inician los metodos get
+// crear un nuevo producto
+app.post('/t_productos', async (req, res) => {
+  
+  const { nombre, descripcion, precio} = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
+  
+  if (!nombre || !descripcion || !precio) {
+    return res.status(400).json({ error: 'Faltan datos para crear el producto' });
+  }
+      
+  try {
+    const result = await pool.query(
+      `INSERT INTO t_productos (nombre, descripcion, precio) 
+       VALUES ($1, $2, $3) RETURNING *`,
+      [nombre, descripcion, precio]
+    );
+    
+    res.status(201).json({ message: 'Producto creado exitosamente', articulo: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// crear un nuevo pedido
+app.post('/t_pedidos', async (req, res) => {
+  
+  const { fk_productos, fk_clientes, cantidad, total, fecha} = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
+  
+  if (!fk_productos || !fk_clientes || !cantidad || !total || !fecha) {
+    return res.status(400).json({ error: 'Faltan datos para crear el pedido' });
+  }
+      
+  try {
+    const result = await pool.query(
+      `INSERT INTO t_pedidos (fk_productos, fk_clientes, cantidad, total, fecha) 
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [fk_productos, fk_clientes, cantidad, total, fecha]
+    );
+    
+    res.status(201).json({ message: 'Pedido creado exitosamente', articulo: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+//terminan los metodos get
 
 app.put('/articulo/:id', async (req, res) => {
   console.log("Aqui viene una peticion",req);
