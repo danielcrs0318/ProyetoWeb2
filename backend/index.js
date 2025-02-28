@@ -62,7 +62,7 @@ app.get('/articulos',async (req, res) => {
   }
 });
 
-
+// inician los metodos get
 // Crear un nuevo cliente
 app.post('/t_clientes', async (req, res) => {
   
@@ -85,7 +85,6 @@ app.post('/t_clientes', async (req, res) => {
   }
 });
 
-// inician los metodos get
 // crear un nuevo producto
 app.post('/t_productos', async (req, res) => {
   
