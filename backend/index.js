@@ -62,7 +62,7 @@ app.get('/articulos',async (req, res) => {
   }
 });
 
-// inician los metodos get
+// inician los metodos get daniel molina
 // Crear un nuevo cliente
 app.post('/t_clientes', async (req, res) => {
   
