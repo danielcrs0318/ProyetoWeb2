@@ -128,7 +128,7 @@ app.post('/t_pedidos', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-//terminan los metodos get
+//terminan los metodos post
 
 app.put('/articulo/:id', async (req, res) => {
   console.log("Aqui viene una peticion",req);
