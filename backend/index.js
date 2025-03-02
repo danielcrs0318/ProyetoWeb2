@@ -214,3 +214,40 @@ app.listen(port, () => {
 });
   
 //Prueba de push Astrid
+//Eliminar Astrid Rosa
+
+//Eliminar tabla cliente
+app.delete('/cliente/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM t_clientes WHERE "Id_cliente" = $1 RETURNING *', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Cliente no encontrado' });
+    }
+    res.json({ message: 'Cliente eliminado', cliente: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
+
+//Eliminar tabla pedido
+app.delete('/pedido/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM t_pedidos WHERE "Id_pedidos" = $1 RETURNING *', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+    res.json({ message: 'Pedido eliminado', pedido: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
