@@ -255,7 +255,7 @@ app.put('/t_pedidos/:id', async (req, res) => {
 
 //Eliminar Astrid Rosa
 //Eliminar tabla cliente
-app.delete('/cliente/:id', async (req, res) => {
+app.delete('/t_cliente/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM t_clientes WHERE "Id_cliente" = $1 RETURNING *', [id]);
@@ -268,12 +268,9 @@ app.delete('/cliente/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
-});
 
 //Eliminar tabla pedido
-app.delete('/pedido/:id', async (req, res) => {
+app.delete('/t_pedido/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM t_pedidos WHERE "Id_pedidos" = $1 RETURNING *', [id]);
@@ -286,6 +283,26 @@ app.delete('/pedido/:id', async (req, res) => {
   }
 });
 
+//Eliminar un Producto
+
+app.delete('/t_producto/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM t_productos WHERE "id_productos" = $1 RETURNING *', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+    res.json({ message: 'Producto eliminado', producto: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//Terminan los metodos Delete
+
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
+
+
