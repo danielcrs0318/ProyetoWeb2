@@ -50,6 +50,7 @@ app.get('/', (req, res) => {
     </html>`);
 });
 
+//metodos get DANIEL PADILLA
 app.get('/articulos',async (req, res) => {
   try {
     const result = await pool.query(`SELECT
@@ -57,6 +58,41 @@ app.get('/articulos',async (req, res) => {
       FROM
         articulos;`);
     res.json({ message: 'Consulta de Articulos', time: result.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/clientes', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM t_clientes;');
+    res.json({ message: 'Lista de Clientes', data: result.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obtener todos los productos
+app.get('/productos', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM t_productos;');
+    res.json({ message: 'Lista de Productos', data: result.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obtener todos los pedidos con información de cliente y producto
+app.get('/pedidos', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.id, c.nombre AS cliente, pr.nombre AS producto, 
+             p.cantidad, p.total, p.fecha
+      FROM t_pedidos p
+      JOIN t_clientes c ON p.fk_clientes = c.id
+      JOIN t_productos pr ON p.fk_productos = pr.id;
+    `);
+    res.json({ message: 'Lista de Pedidos', data: result.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
