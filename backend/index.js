@@ -75,12 +75,7 @@ app.get('/productos', async (req, res) => {
 app.get('/pedidos', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT p.id, c.nombre AS cliente, pr.nombre AS producto, 
-             p.cantidad, p.total, p.fecha
-      FROM t_pedidos p
-      JOIN t_clientes c ON p.fk_clientes = c.id
-      JOIN t_productos pr ON p.fk_productos = pr.id;
-    `);
+      SELECT * FROM t_pedidos;`);
     res.json({ message: 'Lista de Pedidos', data: result.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -89,7 +84,7 @@ app.get('/pedidos', async (req, res) => {
 
 // inician los metodos get daniel molina
 // Crear un nuevo cliente
-app.post('/t_clientes', async (req, res) => {
+app.post('/clientes', async (req, res) => {
   
   const { nombre, correo, telefono} = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
   
@@ -111,7 +106,7 @@ app.post('/t_clientes', async (req, res) => {
 });
 
 // crear un nuevo producto
-app.post('/t_productos', async (req, res) => {
+app.post('/productos', async (req, res) => {
   
   const { nombre, descripcion, precio} = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
   
@@ -133,7 +128,7 @@ app.post('/t_productos', async (req, res) => {
 });
 
 // crear un nuevo pedido
-app.post('/t_pedidos', async (req, res) => {
+app.post('/pedidos', async (req, res) => {
   
   const { fk_productos, fk_clientes, cantidad, total, fecha} = req.body;  // Usamos req.body para obtener los datos del artÃ­culo.
   
@@ -157,7 +152,7 @@ app.post('/t_pedidos', async (req, res) => {
 
 //Inician los metodos put
 // Actualización de un cliente
-app.put('/t_clientes/:id', async (req, res) => {
+app.put('/clientes/:id', async (req, res) => {
   console.log("Aquí viene una petición", req);
   const { id } = req.params;
   const { nombre, correo, telefono } = req.body;
@@ -185,7 +180,7 @@ app.put('/t_clientes/:id', async (req, res) => {
 });
 
 // Actualización de un producto
-app.put('/t_productos/:id', async (req, res) => {
+app.put('/productos/:id', async (req, res) => {
   console.log("Aquí viene una petición", req);
   const { id } = req.params;
   const { nombre, descripcion, precio } = req.body;
@@ -213,7 +208,7 @@ app.put('/t_productos/:id', async (req, res) => {
 });
 
 // Actualización de un pedido
-app.put('/t_pedidos/:id', async (req, res) => {
+app.put('/pedidos/:id', async (req, res) => {
   console.log("Aquí viene una petición", req);
   const { id } = req.params;
   const { fk_productos, fk_clientes, cantidad, total, fecha } = req.body;
@@ -244,7 +239,7 @@ app.put('/t_pedidos/:id', async (req, res) => {
 
 //Eliminar Astrid Rosa
 //Eliminar tabla cliente
-app.delete('/t_cliente/:id', async (req, res) => {
+app.delete('/clientes/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM t_clientes WHERE "Id_cliente" = $1 RETURNING *', [id]);
@@ -259,7 +254,7 @@ app.delete('/t_cliente/:id', async (req, res) => {
 
 
 //Eliminar tabla pedido
-app.delete('/t_pedido/:id', async (req, res) => {
+app.delete('/pedidos/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM t_pedidos WHERE "Id_pedidos" = $1 RETURNING *', [id]);
@@ -274,7 +269,7 @@ app.delete('/t_pedido/:id', async (req, res) => {
 
 //Eliminar un Producto
 
-app.delete('/t_producto/:id', async (req, res) => {
+app.delete('/productos/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM t_productos WHERE "id_productos" = $1 RETURNING *', [id]);
