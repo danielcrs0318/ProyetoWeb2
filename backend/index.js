@@ -166,56 +166,94 @@ app.post('/t_pedidos', async (req, res) => {
 });
 //terminan los metodos post
 
-app.put('/articulo/:id', async (req, res) => {
-  console.log("Aqui viene una peticion",req);
+//Inician los metodos post
+// Actualización de un cliente
+app.put('/t_clientes/:id', async (req, res) => {
+  console.log("Aquí viene una petición", req);
   const { id } = req.params;
-  const { nombre, marca, precio, cantidad } = req.body;
+  const { nombre, correo, telefono } = req.body;
 
-  if (!nombre || !marca || !precio || !cantidad) {
-    return res.status(400).json({ error: 'Faltan datos para actualizar el artÃ­culo' });
+  if (!nombre || !correo || !telefono) {
+    return res.status(400).json({ error: 'Faltan datos para actualizar el cliente' });
   }
 
   try {
     const result = await pool.query(
-      `UPDATE articulos 
-       SET nombre = $1, marca = $2, precio = $3, cantidad = $4 
-       WHERE id = $5 RETURNING *`,
-      [nombre, marca, precio, cantidad, id]
+      `UPDATE t_clientes 
+       SET nombre = $1, correo = $2, telefono = $3
+       WHERE "Id_cliente" = $4 RETURNING *`,
+      [nombre, correo, telefono, id]
     );
     
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'ArtÃ­culo no encontrado' });
+      return res.status(404).json({ error: 'Cliente no encontrado' });
     }
 
-    res.json({ message: 'ArtÃ­culo actualizado', articulo: result.rows[0] });
+    res.json({ message: 'Cliente actualizado', cliente: result.rows[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.delete('/articulo/:id', async (req, res) => {
+// Actualización de un producto
+app.put('/t_productos/:id', async (req, res) => {
+  console.log("Aquí viene una petición", req);
   const { id } = req.params;
-  
+  const { nombre, descripcion, precio } = req.body;
+
+  if (!nombre || !descripcion || !precio) {
+    return res.status(400).json({ error: 'Faltan datos para actualizar el producto' });
+  }
+
   try {
-    const result = await pool.query('DELETE FROM articulos WHERE id = $1 RETURNING *', [id]);
+    const result = await pool.query(
+      `UPDATE t_productos 
+       SET nombre = $1, descripcion = $2, precio = $3
+       WHERE "id_productos" = $4 RETURNING *`,
+      [nombre, descripcion, precio, id]
+    );
     
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'ArtÃ­culo no encontrado' });
+      return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    res.json({ message: 'ArtÃ­culo eliminado', articulo: result.rows[0] });
+    res.json({ message: 'Producto actualizado', producto: result.rows[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
-  } 
+  }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+// Actualización de un pedido
+app.put('/t_pedidos/:id', async (req, res) => {
+  console.log("Aquí viene una petición", req);
+  const { id } = req.params;
+  const { fk_productos, fk_clientes, cantidad, total, fecha } = req.body;
+
+  if (!fk_productos || !fk_clientes || !cantidad || !total || !fecha) {
+    return res.status(400).json({ error: 'Faltan datos para actualizar el pedido' });
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE t_pedidos 
+       SET fk_productos = $1, fk_clientes = $2, cantidad = $3, total = $4, fecha = $5
+       WHERE "Id_pedidos" = $6 RETURNING *`,
+      [fk_productos, fk_clientes, cantidad, total, fecha, id]
+    );
+    
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+
+    res.json({ message: 'Pedido actualizado', pedido: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
-  
-//Prueba de push Astrid
+//Terminan los metodos put
+
+
 //Eliminar Astrid Rosa
-
 //Eliminar tabla cliente
 app.delete('/cliente/:id', async (req, res) => {
   const { id } = req.params;
