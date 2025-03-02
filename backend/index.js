@@ -51,17 +51,6 @@ app.get('/', (req, res) => {
 });
 
 //metodos get DANIEL PADILLA
-app.get('/articulos',async (req, res) => {
-  try {
-    const result = await pool.query(`SELECT
-        *
-      FROM
-        articulos;`);
-    res.json({ message: 'Consulta de Articulos', time: result.rows });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 app.get('/clientes', async (req, res) => {
   try {
@@ -166,7 +155,7 @@ app.post('/t_pedidos', async (req, res) => {
 });
 //terminan los metodos post
 
-//Inician los metodos post
+//Inician los metodos put
 // Actualización de un cliente
 app.put('/t_clientes/:id', async (req, res) => {
   console.log("Aquí viene una petición", req);

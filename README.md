@@ -20,3 +20,20 @@ Paso 7: nos dirigimos siempre en postman a la parte donde dice "send" para proba
 Paso 8: para verificar uso correcto del metodo en postamn en la parte de abajo nos tira un mensaje en forma de JSON que el registro se creo existosamente y nos muestra el registro
 o nos podemos ir a navicat a verificar esta informacion pulsando f5 en la bdd.
 
+## Metodo GET Como Probarlo
+Paso 1: Abrir Postman.
+
+Paso 2: En la barra de dirección, escribe la URL del endpoint. Ejemplo: 192.168.100.78:3000/t_clientes
+
+Paso 3: Cambia el método a GET.
+
+Paso 4: Y dale click a la parte donde dice "send" y si todo esta bien ejemplo:
+ "message": "Lista de Clientes",
+    "data": [
+        {
+            "Id_cliente": 1,
+            "nombre": "daniel molina",
+            "correo": "damolina073@unicah.edu",
+            "telefono": 99887766
+        }
+    ]
